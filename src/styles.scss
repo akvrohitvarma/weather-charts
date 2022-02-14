@@ -1,6 +1,12 @@
 body {
-    background-image: url('assets/bg.jpg');
+    background-image: url('assets/bg-img.jpg');
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
 }
+
+.chart-card{
+    border-radius: 50px;
+    color: azure;
+}
+

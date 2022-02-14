@@ -1,10 +1,13 @@
-<div class="chart-wrapper">
-    <canvas baseChart 
-    [dataset]="barChartData"
-    [labels]="barChartLabels"
-    [options]="barChartOptions"
-    [plugins]="barChartPlugins"
-    [legend]="barChartLegend"
-    [chartType]="barChartType">
-  </canvas>
+
+
+<div class="container">
+  <div class="row p-4 d-flex align-items-center justify-content-center" style="height: 100vh;">
+    <div class="col-9 chart-bg">
+      <canvas baseChart
+      [datasets]="barChartData"
+      [labels]="barChartLabels"
+      [type]="'bar'">
+      </canvas>
+    </div>
+  </div>
 </div>

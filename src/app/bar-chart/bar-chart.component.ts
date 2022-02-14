@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
-import { Chart } from 'chart.js';
-import { Label } from 'ng2-charts';
+import { WeatherDataService } from '../services/weather-data.service';
 
 @Component({
   selector: 'app-bar-chart',
@@ -9,22 +7,56 @@ import { Label } from 'ng2-charts';
   styleUrls: ['./bar-chart.component.scss']
 })
 export class BarChartComponent implements OnInit {
-
-  constructor() { }
+  scity=["Visakhapatnam","Hyderabad","Rajahmundry","Kurnool","Warangal","Vijayawada"];
+  city:any;
+  temps:any;
+  sample:any;
+  error:any;
+  temp_list: String[] = [];
+  loading = false;
+  constructor(public weatherDataService:WeatherDataService) { }
 
   ngOnInit(): void {
+    this.ongo()
   }
 
-  barChartOptions: ChartOptions = {
-    responsive: true,
-  };
-  barChartLabels: Label[] = ['Apple', 'Banana', 'Kiwifruit', 'Blueberry', 'Orange', 'Grapes'];
-  barChartType: ChartType = 'bar';
-  barChartLegend = true;
-  barChartPlugins = [];
+  ongo(){
+    for(this.city in this.scity){
+      this.loading = true;
+      this.weatherDataService.getdata(this.scity[this.city]).subscribe(data=>{
+        var obj = JSON.parse(JSON.stringify(data));
+        this.temps = obj.main.temp;
+        this.temp_list.push(this.temps);
+      },)
+      this.loading = false;
+    }
 
-  barChartData: ChartDataSets[] = [
-    { data: [45, 37, 60, 70, 46, 33], label: 'Best Fruits' }
-  ];
+  }
+
+  barChartLabels:any = ['Vizag', 'Hyderabad', 'Rajahmundry', 'Kurnool', 'Warangal', 'Vijayawada']
+  barChartData:any = [{
+    label: 'Temperature of city',
+    data:this.temp_list,
+    backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)'
+    ],
+    borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+    ],
+    color: [
+      '#000'
+    ],
+    borderWidth: 1
+  }]
 
 }
