@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { forkJoin } from 'rxjs';
 import { WeatherDataService } from '../services/weather-data.service';
 
 @Component({
@@ -17,20 +18,50 @@ export class BarChartComponent implements OnInit {
   constructor(public weatherDataService:WeatherDataService) { }
 
   ngOnInit(): void {
-    this.ongo()
+    //this.ongo()
+    this.ongo_fork()
   }
 
-  ongo(){
-    for(this.city in this.scity){
-      this.loading = true;
-      this.weatherDataService.getdata(this.scity[this.city]).subscribe(data=>{
-        var obj = JSON.parse(JSON.stringify(data));
-        this.temps = obj.main.temp;
-        this.temp_list.push(this.temps);
-      },)
-      this.loading = false;
-    }
+  // ongo(){
+  //   for(this.city in this.scity){
+  //     this.loading = true;
+  //     this.weatherDataService.getdata(this.scity[this.city]).subscribe(data=>{
+  //       var obj = JSON.parse(JSON.stringify(data));
+  //       this.temps = obj.main.temp;
+  //       this.temp_list.push(this.temps);
+  //     },)
+  //     this.loading = false;
+  //   }
+  //   console.log(this.temp_list);
 
+  // }
+
+  ongo_fork(){
+    this.loading = true;
+    forkJoin([
+      this.weatherDataService.getdata('Visakhapatnam'),
+      this.weatherDataService.getdata('Hyderabad'),
+      this.weatherDataService.getdata("Rajahmundry"),
+      this.weatherDataService.getdata("Kurnool"),
+      this.weatherDataService.getdata("Warangal"),
+      this.weatherDataService.getdata("Vijayawada")
+    ]).subscribe(data => {
+      var str = JSON.parse(JSON.stringify(data));
+        this.temps = str[0].main.temp;
+        this.temp_list.push(this.temps);
+        this.temps = str[1].main.temp;
+        this.temp_list.push(this.temps);
+        this.temps = str[2].main.temp;
+        this.temp_list.push(this.temps);
+        this.temps = str[3].main.temp;
+        this.temp_list.push(this.temps);
+        this.temps = str[4].main.temp;
+        this.temp_list.push(this.temps);
+        this.temps = str[5].main.temp;
+        this.temp_list.push(this.temps);
+        console.log(this.temp_list);
+    })
+    this.loading = false;
   }
 
   barChartLabels:any = ['Vizag', 'Hyderabad', 'Rajahmundry', 'Kurnool', 'Warangal', 'Vijayawada']

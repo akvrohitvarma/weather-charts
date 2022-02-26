@@ -1,7 +1,9 @@
 
-
 <div class="container">
   <div class="row p-4 d-flex align-items-center justify-content-center" style="height: 100vh;">
+    <div *ngIf="loading" class="row align-items-center justify-content-center" style="width: 140px;">
+      <img src="https://c.tenor.com/5o2p0tH5LFQAAAAj/hug.gif"/>
+    </div>
     <div class="col-9 chart-bg">
       <canvas baseChart
       [datasets]="barChartData"
